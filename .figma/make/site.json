@@ -1,0 +1,11 @@
+{
+  "title": "monee",
+  "description":"Effortlessly track your spending and manage your budget with this intuitive app designed for individuals seeking financial clarity and control.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
