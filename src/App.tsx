@@ -31,6 +31,19 @@ import { BackupPage } from "@/features/backup/BackupPage"
 export default function App() {
   const status = useSession((s) => s.status)
 
+  // Registered here, not in the unlocked Shell: the browser only treats monee as
+  // installable once a service worker is registered, and a new user meets the
+  // onboarding and lock screens first.
+  useRegisterSW({
+    onNeedRefresh() {
+      // Never reload silently mid-entry: the user chooses when to update.
+      useUi.getState().toast("A new version of monee is ready.", {
+        label: "Update",
+        run: () => window.location.reload(),
+      })
+    },
+  })
+
   // Boot: decide between onboarding and the lock screen.
   useEffect(() => {
     void getSecurity().then((meta) => {
@@ -95,17 +108,7 @@ export default function App() {
 
 function Shell() {
   const openSheet = useUi((s) => s.openSheet)
-  const toast = useUi((s) => s.toast)
   const { pathname } = useLocation()
-  useRegisterSW({
-    onNeedRefresh() {
-      // Never reload silently mid-entry: the user chooses when to update.
-      toast("A new version of monee is ready.", {
-        label: "Update",
-        run: () => window.location.reload(),
-      })
-    },
-  })
 
   useEffect(() => {
     window.scrollTo({ top: 0 })
